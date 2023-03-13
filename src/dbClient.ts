@@ -2,12 +2,14 @@ import mongoose, { Mongoose } from "mongoose";
 
 let client: Mongoose = null;
 
-export async function connect() {
+export async function connect(): Promise<boolean> {
+  let newConnection = false;
   if (!client) {
     console.log("connecting to", process.env.DATABASE_URL);
     client = await mongoose.connect(process.env.DATABASE_URL);
+    newConnection = true;
   }
-  return client;
+  return newConnection;
 }
 
 export async function disconnect() {

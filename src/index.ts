@@ -2,7 +2,7 @@ import * as dbClient from "./dbClient";
 import { Song } from "./models";
 
 void (async function () {
-  await dbClient.connect();
+  // await dbClient.connect();
   const rattleSnake = new Song({
     title: "Rattlesnake",
     artist: "King Gizzard and the Lizard Wizard",

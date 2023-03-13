@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: "JvB"
+
+Parameters:
+  MongoDBUrl:
+    Type: String
+    Default: "{{resolve:secretsmanager:MongoDBUrl}}"
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 128
+    Runtime: nodejs18.x
+    Environment:
+      Variables:
+        DATABASE_URL: !Ref MongoDBUrl
+
+Resources:
+  AsyncLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: async.handler
+
+  CallbackLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: callback.handler
+
+Outputs:
+  AsyncLambda:
+    Description: One
+    Value: !Ref AsyncLambda
+  CallbackLambda:
+    Description: Two
+    Value: !Ref CallbackLambda
