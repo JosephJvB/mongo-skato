@@ -1,16 +1,20 @@
-import mongoose from 'mongoose'
-import dotenv from 'dotenv'
+import * as dbClient from "./dbClient";
+import { Song } from "./models";
 
-void async function() {
-  dotenv.config({
-    path: __dirname + '/../.env'
-  })
-  console.log('connect to mongoDB', process.env.DATABASE_URL)
-  const dbClient = await mongoose.connect(process.env.DATABASE_URL)
-  console.log('connected!')
-  console.log('wait 3s')
-  await new Promise(r => setTimeout(r, 3000))
-  console.log('disconnect from mongoDB')
-  await dbClient.disconnect()
-  console.log('disconnected!')
-}()
+void (async function () {
+  await dbClient.connect();
+  const rattleSnake = new Song({
+    title: "Rattlesnake",
+    artist: "King Gizzard and the Lizard Wizard",
+  });
+  // rattleSnake.play();
+  // await rattleSnake.save();
+  const gizzardSongs = await Song.find({
+    artist: "King Gizzard and the Lizard Wizard",
+  });
+  console.log("found Gizzard Songs", gizzardSongs);
+  // await Song.deleteOne({
+  //   _id: "640f0e567ba5632b8a2b1062",
+  // });
+  await dbClient.disconnect();
+})();
