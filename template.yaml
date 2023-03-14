@@ -6,6 +6,12 @@ Parameters:
   MongoDBUrl:
     Type: String
     Default: "{{resolve:secretsmanager:MongoDBUrl}}"
+  VpcSGs:
+    Type: CommaDelimitedList
+    Default: "sg-07cc3a70f761ed804"
+  VpcSNs:
+    Type: CommaDelimitedList
+    Default: "subnet-0c6694fc8932c8de3,subnet-0d392aebe1da34822"
 
 Globals:
   Function:
@@ -22,6 +28,9 @@ Resources:
     Properties:
       CodeUri: ./dist
       Handler: async.handler
+      VpcConfig:
+        SecurityGroupIds: !Ref VpcSGs
+        SubnetIds: !Ref VpcSNs
 
   CallbackLambda:
     Type: AWS::Serverless::Function
